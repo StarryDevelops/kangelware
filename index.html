@@ -12,10 +12,12 @@
         }
 
         :root {
-            --neon-pink: #FF4DA6;
+            --neon-pink: #FF66C4;
+            --dark-pink: #D03B93;
             --neon-cyan: #00FFFF;
-            --btn-gray: #A0A0A0;
-            --btn-text-gray: #606060;
+            --btn-gray: #B0B0B0;
+            --btn-text-gray: #707070;
+            --outline-color: #38003C;
         }
 
         * {
@@ -87,7 +89,7 @@
             object-fit: contain;
         }
 
-        /* 3. Main Desktop */
+        /* 3. Desktop */
         #screen-desktop {
             background-image: url('background.png');
             background-size: cover;
@@ -100,19 +102,19 @@
         .window-container {
             position: relative;
             width: 650px;
-            height: 595px; /* Matches the vertical proportions of the original image */
+            height: 595px; 
             background-image: url('window.png');
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            box-shadow: 12px 12px 0px rgba(0, 0, 0, 0.4);
-            image-rendering: pixelated; /* Keeps borders clean and retro */
+            box-shadow: 12px 12px 0px rgba(56, 0, 60, 0.3);
+            image-rendering: pixelated;
         }
 
         /* Interactive Area overlays perfectly on the cloud canvas section */
         .window-content {
             position: absolute;
-            top: 85px; /* Keeps elements safely below the title bar */
-            bottom: 45px; /* Keeps elements above the footer bar */
+            top: 85px; 
+            bottom: 45px; 
             left: 20px;
             right: 20px;
             display: flex;
@@ -124,25 +126,32 @@
         }
 
         .header-container {
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
-        /* Exact styling matching your target concept image */
+        /* Hard solid retro drop shadows for text (no blur) */
         .title-main {
-            font-size: 4.8rem;
+            font-size: 5rem;
             margin: 0;
             color: var(--neon-pink);
-            text-shadow: 4px 4px 0px #000000;
-            letter-spacing: 1px;
+            /* Crisp 3D layer offset shadow */
+            text-shadow: 
+                -3px -3px 0px var(--outline-color),  
+                 3px -3px 0px var(--outline-color),
+                -3px  3px 0px var(--outline-color),
+                 3px  3px 0px var(--outline-color),
+                 6px  6px 0px var(--dark-pink);
+            letter-spacing: 2px;
             line-height: 1;
         }
 
         .title-sub {
-            font-size: 1.4rem;
-            margin: 15px 0 0 0;
-            color: #000000;
+            font-size: 1.3rem;
+            margin: 18px 0 0 0;
+            color: var(--outline-color);
             font-weight: 900;
             letter-spacing: 0.5px;
+            text-shadow: 1px 1px 0px #FFFFFF;
         }
 
         /* --- Button Layout --- */
@@ -151,46 +160,57 @@
             gap: 25px;
             width: 90%;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .btn {
             font-family: 'PixelSans', sans-serif;
             font-weight: bold;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             text-transform: uppercase;
-            padding: 18px 0;
-            width: 220px;
-            border: 4px solid #000000;
+            padding: 16px 0;
+            width: 210px;
+            border: 4px solid var(--outline-color);
             outline: none;
             position: relative;
+            letter-spacing: 1px;
+            transition: all 0.05s ease;
         }
 
-        /* Active: Vibrant Pink with Cyan Text Shadow */
+        /* Active: Vibrant Pink with high-contrast Cyan text & distinct 3D base */
         .btn-active {
             background-color: var(--neon-pink);
-            color: var(--neon-cyan);
-            text-shadow: 2px 2px 0px #000000;
-            box-shadow: 6px 6px 0px #000000;
+            color: #FFFFFF;
+            /* Crisp retro text outline + block shadow */
+            text-shadow: 
+                -2px -2px 0px var(--outline-color),  
+                 2px -2px 0px var(--outline-color),
+                -2px  2px 0px var(--outline-color),
+                 2px  2px 0px var(--outline-color),
+                 3px  3px 0px var(--neon-cyan);
+            
+            box-shadow: 6px 6px 0px var(--outline-color);
             cursor: pointer;
         }
 
         .btn-active:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 8px 8px 0px #000000;
+            background-color: #FF85D3;
+            transform: translate(-1px, -1px);
+            box-shadow: 7px 7px 0px var(--outline-color);
         }
 
         .btn-active:active {
-            transform: translate(4px, 4px);
-            box-shadow: 2px 2px 0px #000000;
+            transform: translate(5px, 5px);
+            box-shadow: 1px 1px 0px var(--outline-color);
         }
 
-        /* Disabled Button styling */
+        /* Flat, inert retro look for disabled button */
         .btn-disabled {
             background-color: var(--btn-gray);
             color: var(--btn-text-gray);
             border-color: var(--btn-text-gray);
-            opacity: 0.8;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
+            opacity: 0.75;
             cursor: not-allowed;
         }
 
@@ -215,7 +235,7 @@
 
     <!-- 1. Landing Screen -->
     <div id="screen-landing" class="screen active-screen" onclick="startBootSequence()">
-        <div id="click-to-continue">Click me :3</div>
+        <div id="click-to-continue">Click to Continue</div>
     </div>
 
     <!-- 2. Boot Screen -->
@@ -262,7 +282,6 @@
 
             audioBoot.play().catch(err => console.log("Audio play blocked by browser policies.", err));
 
-            // Transition to main desktop once Boot.mp3 ends
             audioBoot.onended = () => {
                 transitionToDesktop();
             };
@@ -277,7 +296,7 @@
             fromScreen.classList.remove('active-screen');
             setTimeout(() => {
                 toScreen.classList.add('active-screen');
-            }, 600); // Smooth half-second crossfade
+            }, 600);
         }
 
         function closeWindow() {
