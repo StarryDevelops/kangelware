@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KangelWare - MineCraft PVP Client</title>
+    <title>KangelWare - minecraft client</title>
     <style>
         /*
-          Core Aesthetic (Needy Streamer Overload inspired by image_0.png)
-          Key Features: Cyan borders, Pink interiors, Purple/Blue gradient headers, Bold Sans-serif font.
+          Core Aesthetic (Needy Streamer Overload accurate, refined based on image_0.png)
+          Key adjustments for accuracy:
+          - Precise gradients and color stops for borders/headers.
+          - Window content layout uses flexbox for accurate vertical spacing seen in the reference.
+          - Text colors are precisely cyan or white where appropriate against background/header.
+          - Buttons simplified to accurate rects with sharp color contrasts.
         */
 
         @font-face {
@@ -19,13 +23,19 @@
 
         :root {
             --bg-color-pink: #FFC0CB;
-            --window-border-cyan: #00FFFF;
-            --header-gradient-start: #4169E1; /* Royal Blue */
-            --header-gradient-end: #8A2BE2; /* BlueViolet */
-            --text-color: #FFFFFF;
-            --button-pink: #FF69B4;
-            --button-disabled: #A9A9A9;
-            --close-red: #FF0000;
+            --main-cyan: #00FFFF;
+            --main-pink: #FF69B4;
+            --window-interior-gradient: linear-gradient(to bottom, #FFE0E9 0%, #FFC0CB 100%);
+            
+            /* Revised Header Gradients based on image_0.png top bars */
+            --header-gradient-border: linear-gradient(to bottom, #00C8FF 0%, #00FFFF 100%); /* Lighter cyan border */
+            --header-gradient-main: linear-gradient(to bottom, #3030F0 0%, #6000F0 100%); /* Strong Blue to Purple */
+            
+            --text-color-white: #FFFFFF;
+            --text-color-cyan: #00FFFF;
+            --close-red: #FF4444;
+            --button-disabled-bg: #888888;
+            --button-disabled-text: #555555;
         }
 
         * {
@@ -41,7 +51,7 @@
             overflow: hidden;
             background-color: #000; /* Initial black screen */
             font-family: 'PixelSans', sans-serif;
-            color: var(--text-color);
+            color: var(--text-color-white);
         }
 
         /* --- Screens --- */
@@ -105,131 +115,132 @@
             background-attachment: fixed;
         }
 
-        /* --- The Retro Popup Window (Styling based on image_0.png) --- */
+        /* --- The Accurately Styled Retro Popup Window (image_0.png reference) --- */
         .retro-window {
-            width: 600px;
+            width: 650px; /* Adjusted size for better content fit */
             max-width: 90%;
-            /* Thick vibrant cyan border seen in reference */
-            border: 4px solid var(--window-border-cyan);
-            background-color: var(--bg-color-pink);
-            /* Add subtle pattern/gradient inside window for depth */
-            background-image: linear-gradient(to bottom, #FFE0E9, #FFC0CB);
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.5); /* Classic retro shadow */
+            /* PRECISION 1: Accurate Cyan Outer Border */
+            border: 5px solid var(--main-cyan);
+            background: var(--window-interior-gradient);
+            box-shadow: 12px 12px 0px rgba(0,0,0,0.6); /* Slightly heavier shadow */
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        /* Title Bar */
+        /* --- Precise Title Bar Structure (top bars in image_0.png) --- */
         .window-titlebar {
-            height: 35px;
-            /* Blue/Purple gradient seen in image_0.png top bars */
-            background: linear-gradient(90deg, var(--header-gradient-start), var(--header-gradient-end));
+            height: 38px;
+            /* PRECISION 2: Lighter Cyan Gradient Inner Border */
+            border-bottom: 3px solid transparent;
+            border-image: var(--header-gradient-border) 1;
+            
+            /* PRECISION 3: Blue-to-Purple Gradient Header Main */
+            background: var(--header-gradient-main);
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 5px;
-            border-bottom: 2px solid #000; /* Sharp separation */
         }
 
         .title-text {
-            font-size: 1.2em;
+            font-size: 1.3em;
             font-weight: bold;
             color: white;
-            text-shadow: 1px 1px 0px #000;
-            padding-left: 5px;
+            text-shadow: 2px 2px 0px #000; /* Crisp text shadow */
+            padding-left: 8px;
         }
 
         .window-controls {
             display: flex;
-            gap: 3px;
+            gap: 4px;
         }
 
-        /* Classic XP/98 control buttons */
+        /* Accurate window buttons - flat, bold icons */
         .control-btn {
-            width: 25px;
-            height: 25px;
-            border: 2px solid #000;
+            width: 28px;
+            height: 28px;
             background-color: #C0C0C0; /* Standard gray button base */
+            border: 2px solid #000;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: bold;
             color: #000;
-            font-size: 1.2em;
+            font-size: 1.3em;
         }
 
         .control-btn:active {
-            border: 2px solid #FFF #808080 #808080 #FFF; /* Inset effect */
+            background-color: #A0A0A0; /* Inset color */
         }
 
         .control-btn.close {
-            /* Red 'X' required */
             color: var(--close-red);
         }
 
-        /* Window Content */
+        /* --- Precise Window Content Layout (referencing central windows in image_0.png) --- */
         .window-body {
-            padding: 40px;
-            color: #000; /* Dark text inside pink body */
+            flex-grow: 1; /* Pushes action area to the bottom */
+            padding: 50px 30px;
+            color: #000;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Accurate vertical spacing */
+            align-items: center;
         }
 
         .body-header {
-            font-size: 4em; /* Very large bold header */
-            margin: 0 0 10px 0;
-            line-height: 1;
-            color: #8A2BE2; /* Using header purple for main text contrast */
+            font-size: 4.5em; /* Massive header */
+            margin: 0;
+            line-height: 0.9;
+            /* PRECISION 4: Header using Cyan/Purple Contrast Text */
+            color: var(--main-pink); /* Main pink for text body */
+            text-shadow: 3px 3px 0px #000;
         }
 
         .body-description {
-            font-size: 1.3em;
-            margin: 0 0 40px 0;
-            opacity: 0.8;
+            font-size: 1.5em;
+            margin: 15px 0;
+            color: #000;
         }
 
-        /* Bottom Buttons */
+        /* --- Precise Action Button Layout and Style --- */
         .window-action-area {
+            width: 100%;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: auto;
+            gap: 25px;
+            margin-top: 40px; /* Spacer */
         }
 
         .action-button {
-            padding: 15px 30px;
+            padding: 18px 40px;
             font-family: 'PixelSans', sans-serif;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.3em;
             text-transform: uppercase;
-            border: 3px solid #000;
-            color: #000;
+            border: 4px solid #000;
             transition: transform 0.1s;
         }
 
-        /* Active vibrant Join Discord button */
+        /* Active vibrancy - sharp contrast, flat color */
         .btn-active {
-            background-color: var(--button-pink);
-            box-shadow: 5px 5px 0px #800080; /* Purple shadow for active */
+            background-color: var(--main-pink);
+            color: var(--main-cyan); /* Active/Pink button has Cyan text as seen in reference elements */
+            text-shadow: 2px 2px 0px #000;
             cursor: pointer;
         }
 
         .btn-active:hover {
-            transform: translate(2px, 2px);
-            box-shadow: 3px 3px 0px #800080;
+            background-color: #FF80CC;
         }
 
-        .btn-active:active {
-            transform: translate(5px, 5px);
-            box-shadow: 0px 0px 0px #800080;
-        }
-
-        /* Disabled grayed out Download button */
+        /* Disabled accuracy - greyed out flat color */
         .btn-disabled {
-            background-color: var(--button-disabled);
-            border-color: #555;
-            color: #555;
-            box-shadow: none;
+            background-color: var(--button-disabled-bg);
+            border-color: var(--button-disabled-text);
+            color: var(--button-disabled-text);
             opacity: 0.6;
             cursor: not-allowed;
         }
@@ -244,7 +255,7 @@
 
     <!-- 1. Landing / Black Screen -->
     <div id="screen-landing" class="screen active-screen">
-        <div id="click-to-continue">Click me :P</div>
+        <div id="click-to-continue">Click me :3</div>
     </div>
 
     <!-- 2. Boot Sequence (Referencing windows.png) -->
@@ -255,7 +266,7 @@
     <!-- 3. Main Desktop (background.png applied via CSS) -->
     <div id="screen-desktop" class="screen">
         
-        <!-- The KangelWare Popup Window -->
+        <!-- The Accurately Styled KangelWare Popup Window -->
         <div class="retro-window">
             
             <!-- Title Bar -->
@@ -270,8 +281,10 @@
 
             <!-- Window Content -->
             <div class="window-body">
-                <h1 class="body-header">KangelWare</h1>
-                <p class="body-description">Free pvp based minecraft client</p>
+                <div>
+                    <h1 class="body-header">KangelWare</h1>
+                    <p class="body-description">Free pvp based minecraft client</p>
+                </div>
                 
                 <div class="window-action-area">
                     <!-- Disabled Download Button -->
@@ -296,11 +309,10 @@
 
         // Flow Control
         
-        // Step 1: Handle User Gesture to initiate experience (Browsers block autoplay)
+        // Step 1: Handle User Gesture to initiate experience
         screenLanding.addEventListener('click', startBootSequence);
 
         function startBootSequence() {
-            // Remove click listener immediately
             screenLanding.removeEventListener('click', startBootSequence);
 
             // Transition: Landing -> Boot
@@ -313,10 +325,6 @@
             audioBoot.onended = () => {
                 transitionToDesktop();
             };
-            
-            // Fallback: If audio fails to load or play, transition after fixed time
-            // audioBoot.onerror = () => { transitionToDesktop(); };
-            // setTimeout(transitionToDesktop, 5000); // Back up if needed
         }
 
         function transitionToDesktop() {
@@ -330,15 +338,14 @@
         // Helper: Hides current screen, shows next screen
         function switchScreens(currentScreen, nextScreen) {
             currentScreen.classList.remove('active-screen');
-            // Wait for fade out
             setTimeout(() => {
                 nextScreen.classList.add('active-screen');
-            }, 500); // Slight delay for smoother feel, matches css transition
+            }, 500); // Wait for fade-out, then show next
         }
 
         // Basic sanity check for close button (aesthetic only)
         document.querySelector('.control-btn.close').addEventListener('click', function() {
-            alert("Use the client fag. (^_^)");
+            alert("use the client. (^_^)");
         });
 
     </script>
