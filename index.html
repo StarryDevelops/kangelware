@@ -5,19 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KangelWare</title>
     <style>
-        @font-face {
-            font-family: 'PixelSans';
-            src: local('Arial Black'), local('Impact'), sans-serif;
-            font-weight: bold;
-        }
-
         :root {
             --neon-pink: #FF66C4;
-            --dark-pink: #D03B93;
-            --neon-cyan: #00FFFF;
-            --btn-gray: #B0B0B0;
-            --btn-text-gray: #707070;
-            --outline-color: #38003C;
+            --main-dark: #000000;
+            --btn-gray: #D2D2D2;
+            --btn-text-gray: #6E6E6E;
         }
 
         * {
@@ -33,7 +25,8 @@
             height: 100%;
             overflow: hidden;
             background-color: #000000;
-            font-family: 'PixelSans', sans-serif;
+            /* Modern, clean sans-serif font stack */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         /* --- Screen Navigation --- */
@@ -65,10 +58,11 @@
         }
 
         #click-to-continue {
-            font-size: 2.5rem;
+            font-size: 2rem;
+            font-weight: 700;
             color: #FFFFFF;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             animation: pulse 1.5s infinite;
         }
 
@@ -106,7 +100,7 @@
             background-image: url('window.png');
             background-size: 100% 100%;
             background-repeat: no-repeat;
-            box-shadow: 12px 12px 0px rgba(56, 0, 60, 0.3);
+            box-shadow: 12px 12px 0px rgba(0, 0, 0, 0.25);
             image-rendering: pixelated;
         }
 
@@ -129,29 +123,24 @@
             margin-top: 15px;
         }
 
-        /* Hard solid retro drop shadows for text (no blur) */
+        /* Modern text styling: clean, flat 3D offset shadow with no outlines */
         .title-main {
             font-size: 5rem;
+            font-weight: 900;
             margin: 0;
             color: var(--neon-pink);
-            /* Crisp 3D layer offset shadow */
-            text-shadow: 
-                -3px -3px 0px var(--outline-color),  
-                 3px -3px 0px var(--outline-color),
-                -3px  3px 0px var(--outline-color),
-                 3px  3px 0px var(--outline-color),
-                 6px  6px 0px var(--dark-pink);
-            letter-spacing: 2px;
+            text-shadow: 4px 4px 0px var(--main-dark);
+            letter-spacing: -1.5px;
             line-height: 1;
         }
 
         .title-sub {
             font-size: 1.3rem;
+            font-weight: 700;
             margin: 18px 0 0 0;
-            color: var(--outline-color);
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            text-shadow: 1px 1px 0px #FFFFFF;
+            color: var(--main-dark);
+            opacity: 0.85;
+            letter-spacing: -0.2px;
         }
 
         /* --- Button Layout --- */
@@ -164,53 +153,44 @@
         }
 
         .btn {
-            font-family: 'PixelSans', sans-serif;
-            font-weight: bold;
-            font-size: 1.3rem;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 1.2rem;
             text-transform: uppercase;
-            padding: 16px 0;
+            padding: 15px 0;
             width: 210px;
-            border: 4px solid var(--outline-color);
+            border: 3px solid var(--main-dark);
             outline: none;
             position: relative;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             transition: all 0.05s ease;
         }
 
-        /* Active: Vibrant Pink with high-contrast Cyan text & distinct 3D base */
+        /* Active: Clean modern white text on flat pink background with a clean drop shadow */
         .btn-active {
             background-color: var(--neon-pink);
             color: #FFFFFF;
-            /* Crisp retro text outline + block shadow */
-            text-shadow: 
-                -2px -2px 0px var(--outline-color),  
-                 2px -2px 0px var(--outline-color),
-                -2px  2px 0px var(--outline-color),
-                 2px  2px 0px var(--outline-color),
-                 3px  3px 0px var(--neon-cyan);
-            
-            box-shadow: 6px 6px 0px var(--outline-color);
+            box-shadow: 5px 5px 0px var(--main-dark);
             cursor: pointer;
         }
 
         .btn-active:hover {
             background-color: #FF85D3;
             transform: translate(-1px, -1px);
-            box-shadow: 7px 7px 0px var(--outline-color);
+            box-shadow: 6px 6px 0px var(--main-dark);
         }
 
         .btn-active:active {
-            transform: translate(5px, 5px);
-            box-shadow: 1px 1px 0px var(--outline-color);
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0px var(--main-dark);
         }
 
-        /* Flat, inert retro look for disabled button */
+        /* Flat, clean disabled style */
         .btn-disabled {
             background-color: var(--btn-gray);
             color: var(--btn-text-gray);
             border-color: var(--btn-text-gray);
-            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.15);
-            opacity: 0.75;
+            opacity: 0.8;
             cursor: not-allowed;
         }
 
