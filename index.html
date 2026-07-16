@@ -3,44 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KangelWare - minecraft client</title>
+    <title>KangelWare</title>
     <style>
-        /*
-          Core Aesthetic (Needy Streamer Overload accurate, refined based on image_0.png)
-          Key adjustments for accuracy:
-          - Precise gradients and color stops for borders/headers.
-          - Window content layout uses flexbox for accurate vertical spacing seen in the reference.
-          - Text colors are precisely cyan or white where appropriate against background/header.
-          - Buttons simplified to accurate rects with sharp color contrasts.
-        */
-
         @font-face {
             font-family: 'PixelSans';
-            /* Using a common bold sans-serif as fallback for the game's chunky UI font */
             src: local('Arial Black'), local('Impact'), sans-serif;
             font-weight: bold;
         }
 
         :root {
-            --bg-color-pink: #FFC0CB;
-            --main-cyan: #00FFFF;
-            --main-pink: #FF69B4;
-            --window-interior-gradient: linear-gradient(to bottom, #FFE0E9 0%, #FFC0CB 100%);
-            
-            /* Revised Header Gradients based on image_0.png top bars */
-            --header-gradient-border: linear-gradient(to bottom, #00C8FF 0%, #00FFFF 100%); /* Lighter cyan border */
-            --header-gradient-main: linear-gradient(to bottom, #3030F0 0%, #6000F0 100%); /* Strong Blue to Purple */
-            
-            --text-color-white: #FFFFFF;
-            --text-color-cyan: #00FFFF;
-            --close-red: #FF4444;
-            --button-disabled-bg: #888888;
-            --button-disabled-text: #555555;
+            --neon-pink: #FF4DA6;
+            --neon-cyan: #00FFFF;
+            --btn-gray: #A0A0A0;
+            --btn-text-gray: #606060;
         }
 
         * {
             box-sizing: border-box;
             cursor: default;
+            user-select: none;
         }
 
         body, html {
@@ -49,12 +30,11 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #000; /* Initial black screen */
+            background-color: #000000;
             font-family: 'PixelSans', sans-serif;
-            color: var(--text-color-white);
         }
 
-        /* --- Screens --- */
+        /* --- Screen Navigation --- */
         .screen {
             position: absolute;
             top: 0;
@@ -66,7 +46,7 @@
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
             z-index: 1;
         }
 
@@ -78,13 +58,15 @@
 
         /* 1. Landing Screen */
         #screen-landing {
-            background-color: #000;
+            background-color: #000000;
+            cursor: pointer;
         }
 
         #click-to-continue {
-            font-size: 3em;
-            color: #FFF;
+            font-size: 2.5rem;
+            color: #FFFFFF;
             text-transform: uppercase;
+            letter-spacing: 2px;
             animation: pulse 1.5s infinite;
         }
 
@@ -96,18 +78,17 @@
 
         /* 2. Boot Screen */
         #screen-boot {
-            background-color: #000;
+            background-color: #000000;
         }
 
         #boot-logo {
-            max-width: 80%;
-            max-height: 80%;
+            max-width: 90%;
+            max-height: 90%;
             object-fit: contain;
         }
 
         /* 3. Main Desktop */
         #screen-desktop {
-            /* Full-screen fixed background.png */
             background-image: url('background.png');
             background-size: cover;
             background-position: center;
@@ -115,191 +96,160 @@
             background-attachment: fixed;
         }
 
-        /* --- The Accurately Styled Retro Popup Window (image_0.png reference) --- */
-        .retro-window {
-            width: 650px; /* Adjusted size for better content fit */
-            max-width: 90%;
-            /* PRECISION 1: Accurate Cyan Outer Border */
-            border: 5px solid var(--main-cyan);
-            background: var(--window-interior-gradient);
-            box-shadow: 12px 12px 0px rgba(0,0,0,0.6); /* Slightly heavier shadow */
+        /* --- Window Container using window.png --- */
+        .window-container {
+            position: relative;
+            width: 650px;
+            height: 595px; /* Matches the vertical proportions of the original image */
+            background-image: url('window.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            box-shadow: 12px 12px 0px rgba(0, 0, 0, 0.4);
+            image-rendering: pixelated; /* Keeps borders clean and retro */
+        }
+
+        /* Interactive Area overlays perfectly on the cloud canvas section */
+        .window-content {
+            position: absolute;
+            top: 85px; /* Keeps elements safely below the title bar */
+            bottom: 45px; /* Keeps elements above the footer bar */
+            left: 20px;
+            right: 20px;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* --- Precise Title Bar Structure (top bars in image_0.png) --- */
-        .window-titlebar {
-            height: 38px;
-            /* PRECISION 2: Lighter Cyan Gradient Inner Border */
-            border-bottom: 3px solid transparent;
-            border-image: var(--header-gradient-border) 1;
-            
-            /* PRECISION 3: Blue-to-Purple Gradient Header Main */
-            background: var(--header-gradient-main);
-            display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
-            padding: 0 5px;
-        }
-
-        .title-text {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 0px #000; /* Crisp text shadow */
-            padding-left: 8px;
-        }
-
-        .window-controls {
-            display: flex;
-            gap: 4px;
-        }
-
-        /* Accurate window buttons - flat, bold icons */
-        .control-btn {
-            width: 28px;
-            height: 28px;
-            background-color: #C0C0C0; /* Standard gray button base */
-            border: 2px solid #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            color: #000;
-            font-size: 1.3em;
-        }
-
-        .control-btn:active {
-            background-color: #A0A0A0; /* Inset color */
-        }
-
-        .control-btn.close {
-            color: var(--close-red);
-        }
-
-        /* --- Precise Window Content Layout (referencing central windows in image_0.png) --- */
-        .window-body {
-            flex-grow: 1; /* Pushes action area to the bottom */
-            padding: 50px 30px;
-            color: #000;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* Accurate vertical spacing */
-            align-items: center;
+            padding: 20px;
         }
 
-        .body-header {
-            font-size: 4.5em; /* Massive header */
+        .header-container {
+            margin-top: 20px;
+        }
+
+        /* Exact styling matching your target concept image */
+        .title-main {
+            font-size: 4.8rem;
             margin: 0;
-            line-height: 0.9;
-            /* PRECISION 4: Header using Cyan/Purple Contrast Text */
-            color: var(--main-pink); /* Main pink for text body */
-            text-shadow: 3px 3px 0px #000;
+            color: var(--neon-pink);
+            text-shadow: 4px 4px 0px #000000;
+            letter-spacing: 1px;
+            line-height: 1;
         }
 
-        .body-description {
-            font-size: 1.5em;
-            margin: 15px 0;
-            color: #000;
+        .title-sub {
+            font-size: 1.4rem;
+            margin: 15px 0 0 0;
+            color: #000000;
+            font-weight: 900;
+            letter-spacing: 0.5px;
         }
 
-        /* --- Precise Action Button Layout and Style --- */
-        .window-action-area {
-            width: 100%;
+        /* --- Button Layout --- */
+        .button-group {
             display: flex;
-            justify-content: center;
             gap: 25px;
-            margin-top: 40px; /* Spacer */
+            width: 90%;
+            justify-content: center;
+            margin-bottom: 20px;
         }
 
-        .action-button {
-            padding: 18px 40px;
+        .btn {
             font-family: 'PixelSans', sans-serif;
             font-weight: bold;
-            font-size: 1.3em;
+            font-size: 1.4rem;
             text-transform: uppercase;
-            border: 4px solid #000;
-            transition: transform 0.1s;
+            padding: 18px 0;
+            width: 220px;
+            border: 4px solid #000000;
+            outline: none;
+            position: relative;
         }
 
-        /* Active vibrancy - sharp contrast, flat color */
+        /* Active: Vibrant Pink with Cyan Text Shadow */
         .btn-active {
-            background-color: var(--main-pink);
-            color: var(--main-cyan); /* Active/Pink button has Cyan text as seen in reference elements */
-            text-shadow: 2px 2px 0px #000;
+            background-color: var(--neon-pink);
+            color: var(--neon-cyan);
+            text-shadow: 2px 2px 0px #000000;
+            box-shadow: 6px 6px 0px #000000;
             cursor: pointer;
         }
 
         .btn-active:hover {
-            background-color: #FF80CC;
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px #000000;
         }
 
-        /* Disabled accuracy - greyed out flat color */
+        .btn-active:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        /* Disabled Button styling */
         .btn-disabled {
-            background-color: var(--button-disabled-bg);
-            border-color: var(--button-disabled-text);
-            color: var(--button-disabled-text);
-            opacity: 0.6;
+            background-color: var(--btn-gray);
+            color: var(--btn-text-gray);
+            border-color: var(--btn-text-gray);
+            opacity: 0.8;
             cursor: not-allowed;
+        }
+
+        /* Decorative Invisible Top-Bar Hitboxes */
+        .close-hitbox {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            z-index: 10;
         }
 
     </style>
 </head>
 <body>
 
-    <!-- Audio Elements (Required assets: Boot.mp3, music.mp3) -->
+    <!-- Audio Targets -->
     <audio id="audio-boot" src="Boot.mp3" preload="auto"></audio>
     <audio id="audio-loop" src="music.mp3" preload="auto" loop></audio>
 
-    <!-- 1. Landing / Black Screen -->
-    <div id="screen-landing" class="screen active-screen">
+    <!-- 1. Landing Screen -->
+    <div id="screen-landing" class="screen active-screen" onclick="startBootSequence()">
         <div id="click-to-continue">Click me :3</div>
     </div>
 
-    <!-- 2. Boot Sequence (Referencing windows.png) -->
+    <!-- 2. Boot Screen -->
     <div id="screen-boot" class="screen">
-        <img src="windows.png" id="boot-logo" alt="Windows Boot Logo">
+        <img src="windows.png" id="boot-logo" alt="Boot Sequence">
     </div>
 
-    <!-- 3. Main Desktop (background.png applied via CSS) -->
+    <!-- 3. Desktop -->
     <div id="screen-desktop" class="screen">
         
-        <!-- The Accurately Styled KangelWare Popup Window -->
-        <div class="retro-window">
+        <!-- The Window Container (window.png background) -->
+        <div class="window-container">
             
-            <!-- Title Bar -->
-            <div class="window-titlebar">
-                <span class="title-text">KangelWare</span>
-                <div class="window-controls">
-                    <div class="control-btn minimize">_</div>
-                    <div class="control-btn maximize">&#9634;</div>
-                    <div class="control-btn close">X</div>
+            <!-- Close Button Hitbox overlaying the pixel UI graphic -->
+            <div class="close-hitbox" onclick="closeWindow()" title="Close"></div>
+
+            <!-- Foreground Content Layer -->
+            <div class="window-content">
+                <div class="header-container">
+                    <h1 class="title-main">KangelWare</h1>
+                    <p class="title-sub">Free pvp based minecraft client</p>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-disabled" disabled>Download</button>
+                    <button class="btn btn-active" onclick="window.open('https://discord.gg/uhPefYGex4', '_blank')">Join Discord</button>
                 </div>
             </div>
 
-            <!-- Window Content -->
-            <div class="window-body">
-                <div>
-                    <h1 class="body-header">KangelWare</h1>
-                    <p class="body-description">Free pvp based minecraft client</p>
-                </div>
-                
-                <div class="window-action-area">
-                    <!-- Disabled Download Button -->
-                    <button class="action-button btn-disabled" disabled>Download</button>
-                    <!-- Active Join Discord Button -->
-                    <button class="action-button btn-active" onclick="window.open('https://discord.gg/uhPefYGex4', '_blank')">Join Discord</button>
-                </div>
-            </div>
+        </div>
 
-        </div> <!-- /retro-window -->
-
-    </div> <!-- /screen-desktop -->
+    </div>
 
     <script>
-        // DOM Elements
         const screenLanding = document.getElementById('screen-landing');
         const screenBoot = document.getElementById('screen-boot');
         const screenDesktop = document.getElementById('screen-desktop');
@@ -307,47 +257,32 @@
         const audioBoot = document.getElementById('audio-boot');
         const audioLoop = document.getElementById('audio-loop');
 
-        // Flow Control
-        
-        // Step 1: Handle User Gesture to initiate experience
-        screenLanding.addEventListener('click', startBootSequence);
-
         function startBootSequence() {
-            screenLanding.removeEventListener('click', startBootSequence);
-
-            // Transition: Landing -> Boot
             switchScreens(screenLanding, screenBoot);
 
-            // Play Boot Audio
-            audioBoot.play().catch(error => console.log("Audio play blocked:", error));
+            audioBoot.play().catch(err => console.log("Audio play blocked by browser policies.", err));
 
-            // Setup Transition: Desktop loads when Boot Audio ends
+            // Transition to main desktop once Boot.mp3 ends
             audioBoot.onended = () => {
                 transitionToDesktop();
             };
         }
 
         function transitionToDesktop() {
-            // Transition: Boot -> Desktop
             switchScreens(screenBoot, screenDesktop);
-
-            // Start Main Music Loop
-            audioLoop.play().catch(error => console.log("Audio loop blocked:", error));
+            audioLoop.play().catch(err => console.log("Loop track play blocked.", err));
         }
 
-        // Helper: Hides current screen, shows next screen
-        function switchScreens(currentScreen, nextScreen) {
-            currentScreen.classList.remove('active-screen');
+        function switchScreens(fromScreen, toScreen) {
+            fromScreen.classList.remove('active-screen');
             setTimeout(() => {
-                nextScreen.classList.add('active-screen');
-            }, 500); // Wait for fade-out, then show next
+                toScreen.classList.add('active-screen');
+            }, 600); // Smooth half-second crossfade
         }
 
-        // Basic sanity check for close button (aesthetic only)
-        document.querySelector('.control-btn.close').addEventListener('click', function() {
-            alert("use the client. (^_^)");
-        });
-
+        function closeWindow() {
+            alert("This window is required to run the streams... (；′д｀)");
+        }
     </script>
 </body>
 </html>
