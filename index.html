@@ -1,287 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KangelWare</title>
+    <title>KangelWare | Free Undetected PVP Client 1.21.11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        :root {
-            --neon-pink: #FF66C4;
-            --main-dark: #000000;
-            --btn-gray: #D2D2D2;
-            --btn-text-gray: #6E6E6E;
+        body {
+          font-family: 'Inter', system-ui, sans-serif;
+          background:
+            linear-gradient(135deg, #0f001a 0%, #1a0033 100%),
+            radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
         }
-
-        * {
-            box-sizing: border-box;
-            cursor: default;
-            user-select: none;
+        .grid-bg {
+          background-image:
+            linear-gradient(to right, rgba(168, 85, 247, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
+          background-size: 50px 50px;
         }
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000000;
-            /* Modern, clean sans-serif font stack */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        .hero-glow {
+          text-shadow: 0 0 30px rgb(168 85 247 / 0.6);
         }
-
-        /* --- Screen Navigation --- */
-        .screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.8s ease-in-out;
-            z-index: 1;
+        .gui-float {
+          transform: perspective(1000px) rotateY(-18deg) rotateX(10deg);
+          transition: transform 0.4s ease;
         }
-
-        .active-screen {
-            opacity: 1;
-            visibility: visible;
-            z-index: 2;
+        .gui-float:hover {
+          transform: perspective(1000px) rotateY(-12deg) rotateX(6deg);
         }
-
-        /* 1. Landing Screen */
-        #screen-landing {
-            background-color: #000000;
-            cursor: pointer;
-        }
-
-        #click-to-continue {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #FFFFFF;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        /* 2. Boot Screen */
-        #screen-boot {
-            background-color: #000000;
-        }
-
-        #boot-logo {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-        }
-
-        /* 3. Desktop */
-        #screen-desktop {
-            background-image: url('background.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-
-        /* --- Window Container using window.png --- */
-        .window-container {
-            position: relative;
-            width: 650px;
-            height: 595px; 
-            background-image: url('window.png');
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            box-shadow: 12px 12px 0px rgba(0, 0, 0, 0.25);
-            image-rendering: pixelated;
-        }
-
-        /* Interactive Area overlays perfectly on the cloud canvas section */
-        .window-content {
-            position: absolute;
-            top: 85px; 
-            bottom: 45px; 
-            left: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .header-container {
-            margin-top: 15px;
-        }
-
-        /* Modern text styling: clean, flat 3D offset shadow with no outlines */
-        .title-main {
-            font-size: 5rem;
-            font-weight: 900;
-            margin: 0;
-            color: var(--neon-pink);
-            text-shadow: 4px 4px 0px var(--main-dark);
-            letter-spacing: -1.5px;
-            line-height: 1;
-        }
-
-        .title-sub {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin: 18px 0 0 0;
-            color: var(--main-dark);
-            opacity: 0.85;
-            letter-spacing: -0.2px;
-        }
-
-        /* --- Button Layout --- */
-        .button-group {
-            display: flex;
-            gap: 25px;
-            width: 90%;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
-
-        .btn {
-            font-family: inherit;
-            font-weight: 800;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            padding: 15px 0;
-            width: 210px;
-            border: 3px solid var(--main-dark);
-            outline: none;
-            position: relative;
-            letter-spacing: 0.5px;
-            transition: all 0.05s ease;
-        }
-
-        /* Active: Clean modern white text on flat pink background with a clean drop shadow */
-        .btn-active {
-            background-color: var(--neon-pink);
-            color: #FFFFFF;
-            box-shadow: 5px 5px 0px var(--main-dark);
-            cursor: pointer;
-        }
-
-        .btn-active:hover {
-            background-color: #FF85D3;
-            transform: translate(-1px, -1px);
-            box-shadow: 6px 6px 0px var(--main-dark);
-        }
-
-        .btn-active:active {
-            transform: translate(3px, 3px);
-            box-shadow: 2px 2px 0px var(--main-dark);
-        }
-
-        /* Flat, clean disabled style */
-        .btn-disabled {
-            background-color: var(--btn-gray);
-            color: var(--btn-text-gray);
-            border-color: var(--btn-text-gray);
-            opacity: 0.8;
-            cursor: not-allowed;
-        }
-
-        /* Decorative Invisible Top-Bar Hitboxes */
-        .close-hitbox {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            z-index: 10;
-        }
-
     </style>
 </head>
-<body>
+<body class="bg-zinc-950 text-white grid-bg min-h-screen">
 
-    <!-- Audio Targets -->
-    <audio id="audio-boot" src="Boot.mp3" preload="auto"></audio>
-    <audio id="audio-loop" src="music.mp3" preload="auto" loop></audio>
-
-    <!-- 1. Landing Screen -->
-    <div id="screen-landing" class="screen active-screen" onclick="startBootSequence()">
-        <div id="click-to-continue">Click to Continue</div>
+<!-- Navbar -->
+<nav class="border-b border-purple-900/50 bg-black/80 backdrop-blur-md fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="logo.png" alt="KangelWare" class="h-11 w-11">
+            <span class="text-3xl font-bold tracking-tighter">KangelWare</span>
+        </div>
+        <a href="https://discord.gg/uhPefYGex4" target="_blank"
+           class="flex items-center gap-2 bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-2xl font-medium transition-all">
+            <i class="fab fa-discord"></i>
+            Join Discord
+        </a>
     </div>
+</nav>
 
-    <!-- 2. Boot Screen -->
-    <div id="screen-boot" class="screen">
-        <img src="windows.png" id="boot-logo" alt="Boot Sequence">
-    </div>
+<!-- Hero -->
+<section class="min-h-screen flex items-center pt-20">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
-    <!-- 3. Desktop -->
-    <div id="screen-desktop" class="screen">
-        
-        <!-- The Window Container (window.png background) -->
-        <div class="window-container">
-            
-            <!-- Close Button Hitbox overlaying the pixel UI graphic -->
-            <div class="close-hitbox" onclick="closeWindow()" title="Close"></div>
+        <!-- Left Content -->
+        <div class="space-y-10">
+            <div>
+                <h1 class="text-6xl md:text-7xl font-bold leading-none hero-glow">
+                    FREE<br>UNDETECTED<br>PVP CLIENT
+                </h1>
+                <p class="mt-4 text-3xl text-purple-300">Minecraft 1.21.11</p>
+            </div>
 
-            <!-- Foreground Content Layer -->
-            <div class="window-content">
-                <div class="header-container">
-                    <h1 class="title-main">KangelWare</h1>
-                    <p class="title-sub">Free pvp based minecraft client</p>
+            <div class="space-y-6">
+                <div class="flex items-center gap-4 text-xl">
+            <span class="text-emerald-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+                    <span>Undetected on major servers</span>
                 </div>
-
-                <div class="button-group">
-                    <button class="btn btn-disabled" disabled>Download</button>
-                    <button class="btn btn-active" onclick="window.open('https://discord.gg/uhPefYGex4', '_blank')">Join Discord</button>
+                <div class="flex items-center gap-4 text-xl">
+            <span class="text-emerald-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+                    <span>Free Forever</span>
+                </div>
+                <div class="flex items-center gap-4 text-xl">
+            <span class="text-emerald-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+                    <span>Fabric 1.21.11</span>
                 </div>
             </div>
 
+            <div class="flex flex-wrap gap-4 pt-6">
+                <button onclick="alert('KangelWare is not released yet.\n\nJoin the Discord for updates!')"
+                        class="bg-purple-600 hover:bg-purple-500 text-white px-10 py-5 rounded-3xl text-xl font-semibold flex items-center gap-3 transition">
+                    <i class="fas fa-download"></i>
+                    Download (Coming Soon)
+                </button>
+
+                <a href="https://discord.gg/uhPefYGex4" target="_blank"
+                   class="border-2 border-purple-500 hover:bg-purple-950 px-8 py-5 rounded-3xl text-xl font-semibold transition flex items-center gap-3">
+                    <i class="fab fa-discord"></i>
+                    Join Community
+                </a>
+            </div>
         </div>
 
+        <!-- Right Side - GUI -->
+        <div class="flex justify-center md:justify-end">
+            <div class="gui-float">
+                <img src="gui.png" alt="KangelWare GUI" class="max-w-xl md:max-w-2xl rounded-3xl border border-purple-500/20">
+            </div>
+        </div>
     </div>
+</section>
 
-    <script>
-        const screenLanding = document.getElementById('screen-landing');
-        const screenBoot = document.getElementById('screen-boot');
-        const screenDesktop = document.getElementById('screen-desktop');
-        
-        const audioBoot = document.getElementById('audio-boot');
-        const audioLoop = document.getElementById('audio-loop');
+<footer class="py-8 text-center text-zinc-500 border-t border-purple-900/30">
+    <p>KangelWare — Free Undetected PVP Client for Minecraft 1.21.11</p>
+</footer>
 
-        function startBootSequence() {
-            switchScreens(screenLanding, screenBoot);
-
-            audioBoot.play().catch(err => console.log("Audio play blocked by browser policies.", err));
-
-            audioBoot.onended = () => {
-                transitionToDesktop();
-            };
-        }
-
-        function transitionToDesktop() {
-            switchScreens(screenBoot, screenDesktop);
-            audioLoop.play().catch(err => console.log("Loop track play blocked.", err));
-        }
-
-        function switchScreens(fromScreen, toScreen) {
-            fromScreen.classList.remove('active-screen');
-            setTimeout(() => {
-                toScreen.classList.add('active-screen');
-            }, 600);
-        }
-
-        function closeWindow() {
-            alert("This window is required to run the streams... (；′д｀)");
-        }
-    </script>
 </body>
 </html>
